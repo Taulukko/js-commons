@@ -1,6 +1,6 @@
 {
   "name": "taulukko-common-util",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Taulukko Commons Utility",
   "main": "index.js",
   "scripts": {

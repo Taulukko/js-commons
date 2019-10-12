@@ -1,6 +1,8 @@
-import { StringsUtil } from "./strings";
+import { StringsUtil} from "./strings";
 
 class DatesUtil {
+
+    private stringUtil:StringsUtil = new StringsUtil();
 
     public addDays(date: Date, days: number): Date {
         const ret: Date = new Date(date);
@@ -13,19 +15,19 @@ class DatesUtil {
             throw new Error("Date format YYYYMMDD incorrect!");
         }
 
-        const yearStr: string = StringsUtil.left(dateStr, 4);
+        const yearStr: string = this.stringUtil.left(dateStr, 4);
 
         if (isNaN(yearStr as any)) {
             throw new Error("Year must be numeric integer");
         }
 
-        const monthStr: string = StringsUtil.right(StringsUtil.left(dateStr, 6), 2);
+        const monthStr: string = this.stringUtil.right(this.stringUtil.left(dateStr, 6), 2);
 
         if (isNaN(monthStr as any)) {
             throw new Error("Month must be numeric integer");
         }
 
-        const dayStr: string = StringsUtil.right(dateStr, 2);
+        const dayStr: string = this.stringUtil.right(dateStr, 2);
 
         if (isNaN(dayStr as any)) {
             throw new Error("Day must be numeric integer");
@@ -64,6 +66,4 @@ class DatesUtil {
 
 }
 
-const dtUtil: DatesUtil = new DatesUtil();
-
-export { dtUtil as DatesUtil };
+export {  DatesUtil };

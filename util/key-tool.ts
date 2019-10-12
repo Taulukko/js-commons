@@ -8,6 +8,7 @@ const RADIX_BASE: number = 36;
 const VERSION: string = "10";
 
 class KeyTool {
+    private stringUtil:StringsUtil = new StringsUtil();
 
     public build(cluster: number, proccessID: number): string {
 
@@ -23,13 +24,11 @@ class KeyTool {
 
         const strKey: string =
             VERSION +
-            StringsUtil.right("000" + cluster, 3) +
-            StringsUtil.right("000000" + proccessID, 6) + "--" + uuidPart;
+            this.stringUtil.right("000" + cluster, 3) +
+            this.stringUtil.right("000000" + proccessID, 6) + "--" + uuidPart;
 
         return strKey;
     }
 }
-
-const x: string = "";
-
-export { KeyTool as KeyTool, x as test };
+ 
+export { KeyTool  };

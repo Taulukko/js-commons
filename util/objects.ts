@@ -14,7 +14,6 @@ class ObjectsUtil {
         return ret;
     }
 }
+ 
 
-const objUtil: ObjectsUtil = new ObjectsUtil();
-
-export { objUtil as ObjectsUtil };
+export {   ObjectsUtil };

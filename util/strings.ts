@@ -80,7 +80,5 @@ class StringsUtil {
     }
 
 }
-
-const strUtil: StringsUtil = new StringsUtil();
-
-export { strUtil as StringsUtil };
+  
+export {   StringsUtil };

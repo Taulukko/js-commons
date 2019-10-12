@@ -1,4 +1,6 @@
-import { DatesUtil } from "./dates";
+import { DatesUtil as DatesUtilLib} from "./dates";
+
+const DatesUtil:DatesUtilLib = new DatesUtilLib();
 
 // into javascript months use range [0-11]
 const JAVASCRIPT_MONTHS = {

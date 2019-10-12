@@ -1,11 +1,10 @@
  
 
-import * as dates from "./dates";
-import * as keyTool from "./key-tool";
-import * as objects from "./objects";
-import * as strings from "./strings";
-
-
-export const Utils = {Dates:dates.DatesUtil,KeyTool:keyTool.KeyTool,Objects:objects.ObjectsUtil,Strings:strings.StringsUtil};
-
+import {DatesUtil} from "./dates";
+import {KeyTool} from "./key-tool";
+import {ObjectsUtil} from "./objects";
+import {StringsUtil} from "./strings";
  
+export {
+    DatesUtil ,KeyTool,ObjectsUtil,StringsUtil
+  }

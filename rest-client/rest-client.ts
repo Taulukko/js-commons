@@ -1,8 +1,10 @@
 // documentation: https://www.npmjs.com/package/node-rest-client
 import { Client } from "node-rest-client";
-import {Utils} from "taulukko-common-util";
+import {ObjectsUtil} from "taulukko-common-util";
 
 export class RestClient {
+
+    private objects:ObjectsUtil = new ObjectsUtil();
 
     public defaultArgs = {
         headers: { "Content-Type": "application/json" },
@@ -35,7 +37,7 @@ export class RestClient {
 
                 const actionerInfo = this.getActionerInfo(method);
 
-                const finalArgs =  Utils.Objects.shallowCopy(this.defaultArgs);
+                const finalArgs =  this.objects.shallowCopy(this.defaultArgs);
 
                 const argsIsGetShortForm: boolean = actionerInfo.isGet && (args === undefined ||
                     (!args.parameters && !args.headers));
@@ -67,7 +69,7 @@ export class RestClient {
                             finalArgs.data[key] = args[key];
                         }
                     }
-                    args = Utils.Objects.shallowCopy(finalArgs);
+                    args = this.objects.shallowCopy(finalArgs);
                 }
 
                 actionerInfo.actioner(url, args, (data, response) => {
