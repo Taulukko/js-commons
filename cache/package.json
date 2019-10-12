@@ -1,0 +1,26 @@
+{
+  "name": "taulukko-common-cache",
+  "version": "1.0.3",
+  "description": "Taulukko Commons Cache",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Taulukko/js-commons.git"
+  },
+  "keywords": [
+    "npm",
+    "module",
+    "javascript"
+  ],
+  "author": "gandb",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/Taulukko/js-commons/issues"
+  },
+  "homepage": "https://github.com/Taulukko/js-commons#readme",
+  "dependencies": {
+  }
+}
