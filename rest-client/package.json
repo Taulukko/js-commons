@@ -1,6 +1,6 @@
 {
   "name": "taulukko-common-rest-client",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Taulukko Commons Rest Client",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,6 @@
   "homepage": "https://github.com/Taulukko/js-commons#readme",
   "dependencies": {
     "node-rest-client": "^3.1.0",
-    "taulukko-common-util": "file:../util"
+    "taulukko-common-util": "^1.0.10"
   }
 }

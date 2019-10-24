@@ -7,7 +7,10 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "scripts": {},
+  "scripts": {
+    "lint": "tslint --exclude '**/*.temp.ts' --exclude '**/node_modules/**' -p . ",
+    "tsfm": "tsfmt -r --no-tslint"
+  },
   "dependencies": {
     "express": "^4.16.3",
     "firebase": "6.2.1",

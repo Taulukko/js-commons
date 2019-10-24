@@ -14,6 +14,5 @@ class ObjectsUtil {
         return ret;
     }
 }
- 
 
-export {   ObjectsUtil };
+export { ObjectsUtil };

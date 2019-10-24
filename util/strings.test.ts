@@ -1,6 +1,6 @@
-import { StringsUtil as StringsUtilLib} from "./strings";
+import { StringsUtil as StringsUtilLib } from "./strings";
 
-const StringsUtil:StringsUtilLib = new StringsUtilLib();;
+const StringsUtil: StringsUtilLib = new StringsUtilLib();
 
 describe("string util functions", () => {
     beforeEach(() => {

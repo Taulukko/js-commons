@@ -1,6 +1,6 @@
-import { ObjectsUtil as ObjectsLib} from "./objects";
+import { ObjectsUtil as ObjectsLib } from "./objects";
 
-const ObjectsUtil:ObjectsLib = new ObjectsLib();
+const ObjectsUtil: ObjectsLib = new ObjectsLib();
 
 test("shallowCopy from a simple object ", () => {
     expect(ObjectsUtil.shallowCopy("")).toBe("");

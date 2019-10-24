@@ -1,16 +1,16 @@
 // documentation: https://www.npmjs.com/package/node-rest-client
 import { Client } from "node-rest-client";
-import {ObjectsUtil} from "taulukko-common-util";
+import { ObjectsUtil } from "taulukko-common-util";
 
 export class RestClient {
-
-    private objects:ObjectsUtil = new ObjectsUtil();
 
     public defaultArgs = {
         headers: { "Content-Type": "application/json" },
         parameters: {},
         data: {},
     };
+
+    private objects: ObjectsUtil = new ObjectsUtil();
 
     private readonly client = new Client();
 
@@ -37,7 +37,7 @@ export class RestClient {
 
                 const actionerInfo = this.getActionerInfo(method);
 
-                const finalArgs =  this.objects.shallowCopy(this.defaultArgs);
+                const finalArgs = this.objects.shallowCopy(this.defaultArgs);
 
                 const argsIsGetShortForm: boolean = actionerInfo.isGet && (args === undefined ||
                     (!args.parameters && !args.headers));

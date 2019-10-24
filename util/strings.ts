@@ -80,5 +80,5 @@ class StringsUtil {
     }
 
 }
-  
-export {   StringsUtil };
+
+export { StringsUtil };

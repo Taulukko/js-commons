@@ -1,8 +1,5 @@
- 
-
-import {Context} from "./context"
- 
+import { Context } from "./context";
 
 export {
-  Context 
-}
+    Context,
+};

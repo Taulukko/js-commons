@@ -1,8 +1,8 @@
-import { StringsUtil} from "./strings";
+import { StringsUtil } from "./strings";
 
 class DatesUtil {
 
-    private stringUtil:StringsUtil = new StringsUtil();
+    private stringUtil: StringsUtil = new StringsUtil();
 
     public addDays(date: Date, days: number): Date {
         const ret: Date = new Date(date);
@@ -66,4 +66,4 @@ class DatesUtil {
 
 }
 
-export {  DatesUtil };
+export { DatesUtil };

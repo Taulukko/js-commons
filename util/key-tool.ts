@@ -8,7 +8,7 @@ const RADIX_BASE: number = 36;
 const VERSION: string = "10";
 
 class KeyTool {
-    private stringUtil:StringsUtil = new StringsUtil();
+    private stringUtil: StringsUtil = new StringsUtil();
 
     public build(cluster: number, proccessID: number): string {
 
@@ -30,5 +30,5 @@ class KeyTool {
         return strKey;
     }
 }
- 
-export { KeyTool  };
+
+export { KeyTool };
