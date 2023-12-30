@@ -1,8 +1,9 @@
 {
-  "name": "accounts",
-  "version": "0.0.1",
-  "description": "Accounts Service API",
-  "private": true,
+  "name": "taulukko-commons",
+  "version": "1.0.6",
+  "type": "commonjs",
+  "description": "Taulukko Commons Library",
+  "private": false,
   "author": "Taulukko Inc.",
   "engines": {
     "node": ">=10.0.0"
@@ -12,13 +13,7 @@
     "tsfm": "tsfmt -r --no-tslint"
   },
   "dependencies": {
-    "express": "^4.16.3",
-    "firebase": "6.2.1",
-    "firebase-admin": "^5.4.0",
-    "firebase-functions": "0.7.0",
-    "node-cache": "^4.2.1",
-    "node-rest-client": "^3.1.0",
-    "taulukko-common-util": "file:util"
+    "node-cache": "^4.2.1"
   },
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "^3.3.0",

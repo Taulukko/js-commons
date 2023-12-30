@@ -1,12 +1,5 @@
 import { KeyTool } from "./key-tool";
-
-/*async test
- test("[GET] /", async () => {
-  const res = await req(server).get("/");
-  expect(res.text).toBe("Hello ts-node!");
-});
-
-*/
+ 
 
 const keyTool: KeyTool = new KeyTool();
 
