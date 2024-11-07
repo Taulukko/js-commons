@@ -1,7 +1,7 @@
-import { DatesUtil } from "./util/dates";
-import { KeyTool } from "./util/key-tool";
-import { ObjectsUtil } from "./util/objects";
-import { StringsUtil } from "./util/strings";
+import { DatesUtil } from "./util/dates.js";
+import { KeyTool } from "./util/key-tool.js";
+import { ObjectsUtil } from "./util/objects.js";
+import { StringsUtil } from "./util/strings.js";
 
 export {
     DatesUtil, KeyTool, ObjectsUtil, StringsUtil,
