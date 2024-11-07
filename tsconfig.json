@@ -3,16 +3,20 @@
     "target": "ESNext",
     "module": "CommonJS",
     "skipLibCheck": true,
+    "declaration": true,         // Gera arquivos .d.ts para cada arquivo .ts ,
+    "outDir": "./dist",
   },
   "include": [
-    "./**/*.ts"
-  ],
+    "./src/**/*.ts","test/**/*.ts","./index.ts" ,"**/*.spec.ts"  ],
   "exclude":[
-    "./demos/*",
-    "./**/bin/*",
-    "./node_modules",
+     "./**/*.d.ts",
+     "./dist",
+     "./demos/*",
+     "./**/bin/*",
+     "./types",
+     "./node_modules",
   ]
-  ,
+  , 
     "typeRoots": [
         "node_modules/@types"
     ]

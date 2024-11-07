@@ -1,16 +1,27 @@
 {
   "name": "taulukko-commons",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "type": "commonjs",
   "description": "Taulukko Commons Library",
+  "main": "./dist/index.js",
   "private": false,
   "author": "Taulukko Inc.",
   "engines": {
     "node": ">=10.0.0"
   },
+  "files": [
+    "./dist/index.js",
+    "./dist/src/**/*.js",
+    "./dist/index.d.ts",
+    "./dist/src/**/*.d.ts",
+    "./dist/index.js.map",
+    "./dist/src/**/*.js.map"
+  ],
+  "types": "./dist/index.d.ts",
   "scripts": {
     "lint": "tslint --exclude '**/*.temp.ts' --exclude '**/node_modules/**' -p . ",
-    "tsfm": "tsfmt -r --no-tslint"
+    "tsfm": "tsfmt -r --no-tslint",
+    "compile": "tsc -p tsconfig.json --sourceMap"
   },
   "dependencies": {
     "node-cache": "^4.2.1"
@@ -23,7 +34,7 @@
     "ts-jest": "^24.0.2",
     "tslint": "^5.11.0",
     "tslint-eslint-rules-recommended": "^1.2.2",
-    "typescript": "^3.0.1"
+    "typescript": "4.8"
   },
   "jest": {
     "transform": {
