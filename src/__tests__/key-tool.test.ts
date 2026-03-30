@@ -1,4 +1,4 @@
-import { KeyTool } from "./key-tool";
+import { KeyTool } from "../key-tool";
  
 
 const keyTool: KeyTool = new KeyTool();

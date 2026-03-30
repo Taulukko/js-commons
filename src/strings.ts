@@ -10,8 +10,11 @@ class StringsUtil {
         }
     }
 
+    /**
+     * @deprecated use trim() instead
+     */
     public trim(str: string): string {
-        return str.replace(/^\s*|\s*$/g, "");
+        return str.trim();
     }
 
     public right(str: string, n: number): string {
@@ -65,7 +68,7 @@ class StringsUtil {
         }
 
         for (i = 0; i < str.length; i++) {
-            chr = str.charCodeAt(i);
+            chr = str.codePointAt(i);
             // tslint:disable-next-line
             hashCode = ((hashCode << 5) - hashCode) + chr;
             // tslint:disable-next-line

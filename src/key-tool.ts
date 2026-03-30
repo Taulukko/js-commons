@@ -30,9 +30,11 @@ class KeyTool {
             throw new Error("Cluster must be between 0-999");
         }
 
-        if (proccessID >= 100000 || cluster < 0) {
-            throw new Error("Cluster must be between 0-99999");
+        if (proccessID < 0) {
+            throw new Error("ProccessID must be >= 0");
         }
+
+        proccessID = proccessID % 1000000;
 
         const random: string = this.stringUtil.right("0000" + Math.round(Math.random()*9999), 4) ;
 

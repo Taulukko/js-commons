@@ -5,9 +5,11 @@
     "skipLibCheck": true,
     "declaration": true,         // Gera arquivos .d.ts para cada arquivo .ts ,
     "outDir": "./dist",
+    "rootDir": "./src",
+     "types": ["jest"]
   },
   "include": [
-    "./src/**/*.ts","test/**/*.ts","./index.ts" ,"**/*.spec.ts"  ],
+    "./src/**/*.ts"  ],
   "exclude":[
      "./**/*.d.ts",
      "./dist",
