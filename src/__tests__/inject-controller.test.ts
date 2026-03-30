@@ -200,7 +200,42 @@ describe("UserController", () => {
      
   }); 
  
+  
+  it ("using singtle = true need be return ever the same result", () => { 
+    
+      injectController
+        .registerByName<string>("name",
+          ()=>"Edson" ,true);
+          const result1:string = injectController.resolve("name");
+          const result2:string = injectController.resolve("name");
+          expect(result1).toBe(result2);
+ 
+  }); 
+ 
 
+  it ("using constructor never is singleton", () => { 
+    try{
+      injectController
+        .registerByName<UserRepository>("UserRepositoryNotRandom",
+          new UserRepository("Gand") ,true);
+    }
+    catch(e)
+    { 
+      expect(e).toBeDefined();
+      expect(e).not.toBeNull();
+    }
+  }); 
+ 
+  it("singleton by class", () => {
+   injectController
+  .registerByClass<UserRepository>( 
+    () => new UserRepository( Math.round(1000 * Math.random()) + ""));
+     const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
+     const expected2:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
+    expect(expected1.name).not.toBe(expected2.name);
+  });  
+
+  
   it ("using constructor never is singleton", () => { 
     try{
       injectController

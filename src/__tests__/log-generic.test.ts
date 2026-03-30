@@ -19,14 +19,14 @@ describe("LogGenericImpl full tests", () => {
 
     const prefixInjectController = "LogGenericImpl.";
     
-    injectController.registerByName(prefixInjectController + Level.CRITICAL, createMockLogFunction(Level.CRITICAL));
-    injectController.registerByName(prefixInjectController + Level.ERROR, createMockLogFunction(Level.ERROR));
-    injectController.registerByName(prefixInjectController + Level.WARN, createMockLogFunction(Level.WARN));
-    injectController.registerByName(prefixInjectController + Level.INFO, createMockLogFunction(Level.INFO));
-    injectController.registerByName(prefixInjectController + Level.DEBUG, createMockLogFunction(Level.DEBUG));
+    injectController.registerByName(prefixInjectController + Level.CRITICAL, () => createMockLogFunction(Level.CRITICAL));
+    injectController.registerByName(prefixInjectController + Level.ERROR, () => createMockLogFunction(Level.ERROR));
+    injectController.registerByName(prefixInjectController + Level.WARN, () => createMockLogFunction(Level.WARN));
+    injectController.registerByName(prefixInjectController + Level.INFO, () => createMockLogFunction(Level.INFO));
+    injectController.registerByName(prefixInjectController + Level.DEBUG, () => createMockLogFunction(Level.DEBUG));
 
     mockBuildDate = new DatesUtil().parseYYYYMMDDHHMMSS("20231225143015");
-    injectController.registerByName(BUILD_DATE_KEY, () => mockBuildDate);
+    injectController.registerByName(BUILD_DATE_KEY,()=> () => mockBuildDate,true);
   });
 
   test("level() getter and setter", () => {
