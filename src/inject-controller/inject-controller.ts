@@ -1,78 +1,38 @@
+import { InjectorFactory } from "./InjectFactory";
+
  
  
-
-interface Registration<T> {
-  factory: () => T; 
-  singleton:boolean;
-  instance:T
-}
-
+ 
 class InjectController {
-  private registrations = new Map<any, Registration<any>>();
+  private readonly registrations = new Map<string, any>();
  
   registerByClass<T>(
-    factory: (() => T) | T,
-    singleton = false,
+    factory: InjectorFactory<T> | T
   ): this {
+ 
 
-    let  instance:any ;
+    let key:string;
 
-    if(factory instanceof Function)
+    if( factory instanceof InjectorFactory)
     {
-        instance=factory() as T;
+        key = factory.build().constructor.name; 
     }
-    else
-    {
-        instance=factory;
+    else{
+      key = factory.constructor.name;
     }
-
-    if(singleton)
-    {
-      factory = ()=> instance;
-    }
-
-    return this.registerByName(instance.constructor.name,factory,singleton);
+ 
+    return this.registerByName(key,factory);
   }
 
  
   
   registerByName<T>(
     key:string,
-    factory: (() => T ) | T,
-    singleton:boolean = false 
-  ): this {
+    factory: InjectorFactory<T> | T
+  ): this { 
 
-    let registration: Registration<T>;
-    
-    if(factory instanceof Function )
-    { 
-      registration = {
-        factory : factory as ()=>T,
-        singleton,
-        instance:factory()
-      };
-    }
-    else{ 
-
-      if(singleton)
-      {
-         throw new Error( "To be singleton need be a factory and not an instance");
-      }
-
-       registration = {
-        factory: ()=> factory,
-        singleton,
-        instance: factory as T
-      };
-    }
- 
-     
-    if(registration.singleton)
-    {
-      registration.factory = ()=>registration.instance;
-    }
-    this.registrations.set( key , registration );
-    return this;
+      this.registrations.set(key,factory);
+      return this;
   }
 
   resolve<T>(key:string):T{
@@ -82,15 +42,15 @@ class InjectController {
       throw new Error( "key [" + key + "] not registered");
     }
 
-    const registration: Registration<T> =  this.registrations.get(key) as Registration<T> ;
+    const registration =  this.registrations.get(key)  ;
     
 
-    if(registration.singleton)
+    if(registration instanceof  InjectorFactory)
     {
-      return registration.instance as T;
+      return (registration as InjectorFactory<T>).build();
     }
   
-    return registration.factory();
+    return registration as T;
   }  
 
   has<T>(key:string|T):boolean
@@ -99,7 +59,7 @@ class InjectController {
     {
       key = (key as any).constructor.name;
     }
-    return this.registrations.has(key);
+    return this.registrations.has(key as string);
   }
 
   clearAll():this{
@@ -112,11 +72,11 @@ class InjectController {
     {
       key = (key as any).constructor.name;
     }
-    this.registrations.delete(key);
+    this.registrations.delete(key as string);
 
     return this;
   }
 
 }
 
-export var injectController = new InjectController();
+export const injectController = new InjectController();

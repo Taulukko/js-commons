@@ -1,4 +1,5 @@
 // __tests__/UserController.spec.ts
+import { InjectorFactory } from "../inject-controller/InjectFactory";
 import { injectController } from "../inject-controller/inject-controller";
 
 class UserRepository{
@@ -28,7 +29,7 @@ describe("UserController", () => {
    injectController
     .registerByName<UserRepository>(
     "UserRepositorySingleton" ,
-    () => new UserRepository(Math.round(1000 * Math.random()) + ""),true  );
+     new UserRepository(Math.round(1000 * Math.random()) + ""));
 
     const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepositorySingleton" );
     const expected2:UserRepository  = injectController.resolve<UserRepository>("UserRepositorySingleton" );
@@ -37,21 +38,19 @@ describe("UserController", () => {
 
     it("por classe mas não singleton", () => {
       injectController 
-      .registerByClass<UserRepository>( 
-        () => new UserRepository( Math.round(1000 * Math.random()) + ""),
-        false);
+      .registerByClass<()=>UserRepository>( 
+        () => new UserRepository( Math.round(1000 * Math.random()) + ""));
 
 
-     const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
-     const expected2:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
-     expect(expected1.name).not.toBe(expected2.name);
+     const expected1:()=>UserRepository  = injectController.resolve<()=>UserRepository>("Function" );
+     const expected2:()=>UserRepository  = injectController.resolve<()=>UserRepository>("Function" );
+     expect(expected1().name).not.toBe(expected2().name);
   }); 
   
   it("por classe singleton", () => {
       injectController 
       .registerByClass<UserRepository>( 
-        () => new UserRepository( Math.round(1000 * Math.random()) + ""),
-        true);
+         new UserRepository( Math.round(1000 * Math.random())+ ""));
 
 
      const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
@@ -63,13 +62,11 @@ describe("UserController", () => {
   it("undefined", () => {
      injectController
         .registerByName<UserRepository>("exist",
-            () => new UserRepository(Math.round(1000 * Math.random()) + "") );
+            new UserRepository(Math.round(1000 * Math.random()) + "") );
 
-    
-       
     try{
-    injectController.resolve<UserRepository>("not-exist" );
-     fail("Expected an error here");
+      injectController.resolve<UserRepository>("not-exist" );
+       fail("Expected an error here");
     }
     catch(e)
     { 
@@ -79,26 +76,25 @@ describe("UserController", () => {
     finally
     {
       const expected2:UserRepository  = injectController.resolve<UserRepository>("exist" );
+       expect(expected2).not.toBeNull();
     }
     
    
   });
     
-  it("randon by name using factor", () => {
+  it("randon by name using function", () => {
     injectController
-      .registerByName<UserRepository>("UserRepositoryRandom",
+      .registerByName<()=>UserRepository>("UserRepositoryRandom",
         () => new UserRepository(Math.round(1000 * Math.random()) + "") );
 
-     const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepositoryRandom" );
-     const expected2:UserRepository  = injectController.resolve<UserRepository>("UserRepositoryRandom" );
+     const expected1:()=>UserRepository  = injectController.resolve<()=>UserRepository>("UserRepositoryRandom" );
+     const expected2:()=>UserRepository  = injectController.resolve<()=>UserRepository>("UserRepositoryRandom" );
       
-    expect(expected1.name).not.toBe(expected2.name); 
-    expect(expected1.id).not.toBe(expected2.id); 
+    expect(expected1().name).not.toBe(expected2().name); 
+    expect(expected1().id).not.toBe(expected2().id); 
   });
    
   it ("using constructor singleton", () => {
-    
-    
       injectController
         .registerByName<UserRepository>("UserRepositorySingleton",
           new UserRepository("Gand") );
@@ -110,9 +106,7 @@ describe("UserController", () => {
      
   }); 
 
-  it ("remove using string", () => {
-    
-    
+  it ("remove using string", () => { 
       injectController
         .registerByName<UserRepository>("UserRepository",
           new UserRepository("Gand") );
@@ -174,19 +168,20 @@ describe("UserController", () => {
     
     
       injectController
-        .registerByName<UserRepository>("UserRepository1",()=>new UserRepository("Gand") );
+        .registerByName<()=>UserRepository>("UserRepository1",()=>new UserRepository("Gand") );
       injectController
-          .registerByName<UserRepository>("UserRepository2",()=>new UserRepository("Gand") );
+          .registerByName<()=>UserRepository>("UserRepository2",()=>new UserRepository("Gand") );
           
-      const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepository1" );
+      const expected1:()=>UserRepository  = injectController.resolve<()=>UserRepository>("UserRepository1" );
       injectController.clearAll();
       try{
           expect(expected1).toBeDefined();
           expect(expected1).not.toBeNull();
-          expect(expected1.name).toBeDefined();
-          expect(expected1.name).not.toBeNull();
-          expect(expected1.id).toBeDefined();
-          expect(expected1.id).not.toBeNull();
+          expect(expected1().name).toBeDefined();
+          expect(expected1().name).not.toBeNull();
+          expect(expected1().id).toBeDefined();
+          expect(expected1().id).not.toBeNull();
+
          injectController.resolve<UserRepository>("UserRepository2" );
          fail("Is expected an error");
       }
@@ -201,11 +196,11 @@ describe("UserController", () => {
   }); 
  
   
-  it ("using singtle = true need be return ever the same result", () => { 
+  it ("using singtle = string need be return ever the same result", () => { 
     
       injectController
         .registerByName<string>("name",
-          ()=>"Edson" ,true);
+           "Edson" );
           const result1:string = injectController.resolve("name");
           const result2:string = injectController.resolve("name");
           expect(result1).toBe(result2);
@@ -217,7 +212,7 @@ describe("UserController", () => {
     try{
       injectController
         .registerByName<UserRepository>("UserRepositoryNotRandom",
-          new UserRepository("Gand") ,true);
+          new UserRepository("Gand") );
     }
     catch(e)
     { 
@@ -226,49 +221,34 @@ describe("UserController", () => {
     }
   }); 
  
-  it("singleton by class", () => {
+  it("not singleton by InjectFactory class", () => {
    injectController
   .registerByClass<UserRepository>( 
-    () => new UserRepository( Math.round(1000 * Math.random()) + ""));
+     new InjectorFactory<UserRepository>(()=> new UserRepository  ( Math.round(1000 * Math.random() )+ "")));
      const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
      const expected2:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
     expect(expected1.name).not.toBe(expected2.name);
+  });  
+
+   
+ 
+  it("using function by class", () => {
+   injectController
+  .registerByClass<()=>UserRepository>( 
+    () => new UserRepository( Math.round(1000 * Math.random()) + ""));
+     const expected1:()=>UserRepository  = injectController.resolve<()=>UserRepository>("Function" );
+     const expected2:()=>UserRepository  = injectController.resolve<()=>UserRepository>("Function" );
+    expect(expected1().name).not.toBe(expected2().name);
   });  
 
   
-  it ("using constructor never is singleton", () => { 
-    try{
-      injectController
-        .registerByName<UserRepository>("UserRepositoryNotRandom",
-          new UserRepository("Gand") ,true);
-    }
-    catch(e)
-    { 
-      expect(e).toBeDefined();
-      expect(e).not.toBeNull();
-    }
-  }); 
- 
-  it("singleton by class", () => {
+  it("using function by name", () => {
    injectController
-  .registerByClass<UserRepository>( 
+  .registerByName<()=>UserRepository>( "functionBuilder", 
     () => new UserRepository( Math.round(1000 * Math.random()) + ""));
-     const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
-     const expected2:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
-    expect(expected1.name).not.toBe(expected2.name);
+     const expected1:()=>UserRepository  = injectController.resolve<()=>UserRepository>("functionBuilder" );
+     const expected2:()=>UserRepository  = injectController.resolve<()=>UserRepository>("functionBuilder" );
+    expect(expected1().name).not.toBe(expected2().name);
   });  
-
- it("impossible not be singleton using constructor by class", () => {
-  let count =1;
-   injectController
-  .registerByClass<UserRepository>( 
-    new UserRepository(count++ + ""),
-    true);
-
-    const expected1:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
-    const expected2:UserRepository  = injectController.resolve<UserRepository>("UserRepository" );
-
-    expect(expected1.name).toBe(expected2.name);
-   
-  });  
+ 
 });

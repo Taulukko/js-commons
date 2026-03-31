@@ -7,10 +7,13 @@ describe("LogGenericImpl full tests", () => {
   let mockBuildDate: Date;
 
   const createMockLogFunction = (level: Level) => (...args: Array<any>) => {
-    if (!capturedMessages.has(level)) {
-      capturedMessages.set(level, []);
-    }
-    capturedMessages.get(level)!.push(args.join(" "));
+    const ret = (...args:Array<any>)=>{
+        if (!capturedMessages.has(level)) {
+              capturedMessages.set(level, []);
+            }
+            capturedMessages.get(level)!.push(args.join(" "));
+          };
+    return ret;
   };
 
   beforeEach(() => {
@@ -24,9 +27,10 @@ describe("LogGenericImpl full tests", () => {
     injectController.registerByName(prefixInjectController + Level.WARN, () => createMockLogFunction(Level.WARN));
     injectController.registerByName(prefixInjectController + Level.INFO, () => createMockLogFunction(Level.INFO));
     injectController.registerByName(prefixInjectController + Level.DEBUG, () => createMockLogFunction(Level.DEBUG));
+    
 
     mockBuildDate = new DatesUtil().parseYYYYMMDDHHMMSS("20231225143015");
-    injectController.registerByName(BUILD_DATE_KEY,()=> () => mockBuildDate,true);
+    injectController.registerByName(BUILD_DATE_KEY,()=> mockBuildDate );
   });
 
   test("level() getter and setter", () => {
@@ -102,7 +106,7 @@ describe("LogGenericImpl full tests", () => {
     expect(logger.isCompatible(Level.INFO)).toBe(true);
     expect(logger.isCompatible(Level.DEBUG)).toBe(false);
   });
-
+ 
   test("isCompatible() with DEBUG level", () => {
     const logger = new LogGenericImpl();
     logger.level(Level.DEBUG);
