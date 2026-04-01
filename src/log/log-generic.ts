@@ -3,17 +3,39 @@ import { injectController } from "../inject-controller/inject-controller";
 import { Level, Log, LogFunction } from "./log";
 
 export interface LogOptions {
+    /**
+ * String prefix to prepend to each log message.
+ * @defaultValue ""
+ */
     prefix: string;
+    /**
+ * Whether to include the timestamp in log output.
+ * @defaultValue true
+ */
     hasDate: boolean;
+    /**
+ * Whether to include the log level in square brackets in the output.
+ * @defaultValue true
+ */
     hasLevel: boolean;
+    /**
+ * Unused property (kept for backward compatibility).
+ * The actual format is always: `prefix [level] date`
+ */
     format: string;
 }
 
 type BuildDate = () => Date;
-
+/**
+ * Injection token key for providing a custom build date function.
+ * Used to inject a custom date provider instead of the default Date constructor.
+ */
 export const BUILD_DATE_KEY: string = "LogGenericImpl.BuildDate";
 
-// Helper to map Level enum to numeric values for comparison
+/**
+ * Internal mapping of log levels to numeric values for comparison.
+ * Higher values represent more severe levels, enabling level-based filtering.
+ */
 const levelNumericMap: Record<Level, number> = {
     [Level.DEBUG]: 0,
     [Level.INFO]: 1,
@@ -23,23 +45,59 @@ const levelNumericMap: Record<Level, number> = {
 };
 
 /**
- * Log class generic, fail case uses console.log / error / warn ...
- * For now, this implementation ignore formatation, so always the format is prefix + "[" +  level + "] yyyyMMSSmmmHHMMSS"
+ * Generic logging implementation with dependency injection support.
+ * Provides log level filtering and configurable output formatting.
+ * Falls back to native console methods if no injectable functions are registered.
+ * 
+ * Log levels (from least to most severe): DEBUG, INFO, WARN, ERROR, CRITICAL
+ * 
+ * Output format: `{prefix} [{level}] {date}` (components are conditional based on options)
  */
 export class LogGenericImpl implements Log {
-
+    /**
+     * Current log level threshold. Only messages at this level or higher severity are logged.
+     * @defaultValue Level.INFO
+     */
     #level: Level = Level.INFO;
-
+    /**
+     * Injected or fallback function for CRITICAL level logging.
+     */
     readonly #critical: LogFunction;
+    /**
+ * Injected or fallback function for ERROR level logging.
+ */
     readonly #error: LogFunction;
+    /**
+ * Injected or fallback function for WARN level logging.
+ */
     readonly #warn: LogFunction;
+    /**
+ * Injected or fallback function for INFO level logging.
+ */
     readonly #info: LogFunction;
+    /**
+ * Injected or fallback function for DEBUG level logging.
+ */
     readonly #debug: LogFunction;
+    /**
+ * Logger configuration options.
+ */
     readonly #options: LogOptions;
+    /**
+ * Function that provides the current date/time for log timestamps.
+ * Can be injected via BUILD_DATE_KEY for custom behavior.
+ * * Utility instance for date formatting operations.
+ */
     readonly #buildDate: BuildDate;
+    /**
+ * Utility instance for date formatting operations.
+ */
     readonly #dateUtil: DatesUtil = new DatesUtil();
 
-
+    /**
+     * Creates a new LogGenericImpl instance.
+     * @param options - Configuration options for logging format. Defaults to empty prefix with date and level enabled.
+     */
     constructor(options: LogOptions = {
         prefix: "",
         hasDate: true, // Changed default to true to match 'default options' test expectation
@@ -58,25 +116,41 @@ export class LogGenericImpl implements Log {
 
         this.#options = options;
     }
-
+    /**
+     * Gets or sets the current log level threshold.
+     * When called without arguments, returns the current level.
+     * When called with a level, sets it as the new threshold.
+     * @param level - The log level to set (optional). If omitted, acts as getter.
+     * @returns The current log level.
+     */
     level(level: Level | undefined = undefined): Level {
         if (level != undefined) {
             this.#level = level;
         }
         return this.#level;
     }
-
+    /**
+     * Checks if a given log level is compatible with the current level threshold.
+     * A level is compatible if its severity is greater than or equal to the current threshold.
+     * @param level - The log level to check compatibility for.
+     * @returns true if the level should be logged, false if it should be filtered out.
+     */
     isCompatible(level: Level): boolean {
         const currentLevelValue = levelNumericMap[this.#level];
         const checkLevelValue = levelNumericMap[level];
         return checkLevelValue >= currentLevelValue;
     }
 
-    // Refactored log method to conditionally include parts based on options
+    /** 
+   * Gets or sets the current log level threshold.
+   * When called without arguments, returns the current level.
+   * When called with a level, sets it as the new threshold.
+   * @param level - The log level to set (optional). If omitted, acts as getter.
+   * @returns The current log level.
+   */
     private log(logFunction: LogFunction, level: Level, ...args: Array<any>): void {
 
-        if(!this.isCompatible(level))
-        {
+        if (!this.isCompatible(level)) {
             return;
         }
         const dateString = this.#dateUtil.toString(this.#buildDate(), 14);
@@ -110,24 +184,39 @@ export class LogGenericImpl implements Log {
             logFunction(...args);
         }
     }
-
+    /**
+     * Logs a critical message (highest severity level).
+     * @param args - Message arguments to log.
+     */
     critical(...args: Array<any>): void {
-        this.log(this.#critical,Level.CRITICAL, ...args);
+        this.log(this.#critical, Level.CRITICAL, ...args);
     }
-
+    /**
+     * Logs an error message.
+     * @param args - Message arguments to log.
+     */
     error(...args: Array<any>): void {
-        this.log(this.#error,Level.ERROR, ...args);
+        this.log(this.#error, Level.ERROR, ...args);
     }
-
+    /**
+     * Logs a warning message.
+     * @param args - Message arguments to log.
+     */
     warn(...args: Array<any>): void {
-        this.log(this.#warn,Level.WARN, ...args);
+        this.log(this.#warn, Level.WARN, ...args);
     }
-
+    /**
+     * Logs an informational message.
+     * @param args - Message arguments to log.
+     */
     info(...args: Array<any>): void {
-        this.log(this.#info,Level.INFO, ...args);
+        this.log(this.#info, Level.INFO, ...args);
     }
-
+    /**
+     * Logs a debug message (lowest severity level).
+     * @param args - Message arguments to log.
+     */
     debug(...args: Array<any>): void {
-        this.log(this.#debug,Level.DEBUG, ...args);
+        this.log(this.#debug, Level.DEBUG, ...args);
     }
 }
