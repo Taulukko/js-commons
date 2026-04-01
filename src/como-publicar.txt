@@ -7,8 +7,11 @@ resultar num erro, registre o usuário com :
 
 3-) O código deve estar num arquivo chamado index.js ou, configure o package.json a propriedade main para apontar para o código.
 
-4-) Depois de fazer a biblioteca e testar, use o 
+4-)Logue-se com 
+#npm login
+
+5-) Depois de fazer a biblioteca e testar, use o 
 #npm publish 
 para publicar.
 
-5-) Para usar, veja ../using-private-node-module
+6-) Para usar, veja ../using-private-node-module
