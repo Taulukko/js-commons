@@ -6,18 +6,13 @@ class StringsUtil {
     /**
      * Returns the first n characters from the left side of the string.
      * 
+     * @deprecated Use the native {@link Double.prototype.slice} method: `str.slice(0, n)` instead.
      * @param str - The string to extract characters from.
      * @param n - The number of characters to extract.
      * @returns A string containing the leftmost n characters. Returns an empty string if n <= 0.
      */
     public left(str: string, n: number): string {
-        if (n <= 0) {
-            return "";
-        } else if (n > str.length) {
-            return str;
-        } else {
-            return str.substring(0, n);
-        }
+        return n > 0 ? str.slice(0, n) : "";
     }
 
     /**
@@ -34,70 +29,56 @@ class StringsUtil {
     /**
      * Returns the last n characters from the right side of the string.
      * 
+     * @deprecated Use the native {@link String.prototype.slice} method: `str.slice(-n)` instead.
      * @param str - The string to extract characters from.
      * @param n - The number of characters to extract.
      * @returns A string containing the rightmost n characters. Returns an empty string if n <= 0.
      */
     public right(str: string, n: number): string {
-        if (n <= 0) {
-            return "";
-        } else if (n > str.length) {
-            return str;
-        } else {
-            const iLen: number = str.length;
-            return str.substring(iLen, iLen - n);
-        }
+        return n > 0 ? str.slice(-n) : "";
     }
 
     /**
      * Repeats a string n times, joined by a separator.
      * 
+     * @deprecated Use the native {@link Array.from} method: `Array.from({ length: n }, () => str).join(separator)` instead.
      * @param str - The string to repeat.
      * @param n - The number of times to repeat the string.
      * @param separator - The string to use as a separator between repetitions.
      * @returns The repeated and joined string. Returns an empty string if n <= 0.
      */
     public repeat(str: string, n: number, separator: string): string {
-        let ret = "";
-
-        for (let index = 0; index < n; index++) {
-            if (index > 0) {
-                ret += separator;
-            }
-            ret += str;
-        }
-
-        return ret;
+        return n > 0 ? Array.from({ length: n }, () => str).join(separator) : "";
     }
 
     /**
      * Pads the string on the left with a specified padding value until it reaches the desired length.
      * If the string is already longer than n, it will be truncated from the left (keeping the rightmost n characters).
      * 
+     * @deprecated Use the native {@link String.prototype.padStart} method instead. 
+     * Note: to keep truncation behavior, use `str.padStart(n, paddingValue).slice(-n)`.
      * @param str - The string to pad.
      * @param n - The target length of the resulting string.
      * @param paddingValue - The value to use for padding.
      * @returns The padded (or truncated) string.
      */
     public leftPadding(str: string, n: number, paddingValue: string): string {
-        const emptyBlock = this.repeat(paddingValue, n, "");
-        str = emptyBlock + str;
-        return this.right(str, n);
+        return n > 0 ? str.padStart(n, paddingValue).slice(-n) : "";
     }
 
     /**
      * Pads the string on the right with a specified padding value until it reaches the desired length.
      * If the string is already longer than n, it will be truncated from the right (keeping the leftmost n characters).
      * 
+     * @deprecated Use the native {@link String.prototype.padEnd} method instead.
+     * Note: to keep truncation behavior, use `str.padEnd(n, paddingValue).slice(0, n)`.
      * @param str - The string to pad.
      * @param n - The target length of the resulting string.
      * @param paddingValue - The value to use for padding.
      * @returns The padded (or truncated) string.
      */
     public rightPadding(str: string, n: number, paddingValue: string): string {
-        const emptyBlock = this.repeat(paddingValue, n, "");
-        str += emptyBlock;
-        return this.left(str, n);
+        return n > 0 ? str.padEnd(n, paddingValue).slice(0, n) : "";
     }
 
     /**
