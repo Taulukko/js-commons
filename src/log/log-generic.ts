@@ -74,6 +74,11 @@ export class LogGenericImpl implements Log {
 
     // Refactored log method to conditionally include parts based on options
     private log(logFunction: LogFunction, level: Level, ...args: Array<any>): void {
+
+        if(!this.isCompatible(level))
+        {
+            return;
+        }
         const dateString = this.#dateUtil.toString(this.#buildDate(), 14);
         const messageParts: string[] = [];
 

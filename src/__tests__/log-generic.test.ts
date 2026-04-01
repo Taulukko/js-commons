@@ -1,4 +1,4 @@
-import { Level, Log, LogGenericImpl, LogOptions, BUILD_DATE_KEY } from "../log";
+import { Level, LogGenericImpl, LogOptions, BUILD_DATE_KEY } from "../log";
 import { injectController } from "../inject-controller/inject-controller";
 import { DatesUtil } from "../dates";
 
@@ -21,12 +21,19 @@ describe("LogGenericImpl full tests", () => {
     injectController.clearAll();
 
     const prefixInjectController = "LogGenericImpl.";
-    
-    injectController.registerByName(prefixInjectController + Level.CRITICAL, () => createMockLogFunction(Level.CRITICAL));
-    injectController.registerByName(prefixInjectController + Level.ERROR, () => createMockLogFunction(Level.ERROR));
-    injectController.registerByName(prefixInjectController + Level.WARN, () => createMockLogFunction(Level.WARN));
-    injectController.registerByName(prefixInjectController + Level.INFO, () => createMockLogFunction(Level.INFO));
-    injectController.registerByName(prefixInjectController + Level.DEBUG, () => createMockLogFunction(Level.DEBUG));
+
+    const criticalFunction = (createMockLogFunction(Level.CRITICAL))();
+    const errorFunction = (createMockLogFunction(Level.ERROR))();
+    const warnFunction = (createMockLogFunction(Level.WARN))();
+    const infoFunction = (createMockLogFunction(Level.INFO))();
+    const debugFunction = (createMockLogFunction(Level.DEBUG))();
+ 
+
+    injectController.registerByName(prefixInjectController + Level.CRITICAL, criticalFunction);
+    injectController.registerByName(prefixInjectController + Level.ERROR, errorFunction);
+    injectController.registerByName(prefixInjectController + Level.WARN, warnFunction);
+    injectController.registerByName(prefixInjectController + Level.INFO, infoFunction);
+    injectController.registerByName(prefixInjectController + Level.DEBUG, debugFunction);
     
 
     mockBuildDate = new DatesUtil().parseYYYYMMDDHHMMSS("20231225143015");
@@ -195,7 +202,8 @@ describe("LogGenericImpl full tests", () => {
       hasLevel: true,
       format: ""
     });
-
+  
+    logger.level(Level.DEBUG);
     logger.debug("debug message");
     logger.debug("variable value", 42, { test: true });
 
